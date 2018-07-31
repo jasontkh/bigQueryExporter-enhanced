@@ -11,7 +11,7 @@ class BigQueryExporterEnhanced(BigQueryExporter):
         super().__init__(project_name, dataset_name, bucket_name, log_lambda=log_lambda)
 
     # Enhancement of the query_to_local function
-    def query_to_local(self, query, job_name="", data_dir_path="export", keep_temp_table=False, overwrite=True):
+    def query_to_local(self, query, job_name="", data_dir_path="export", keep_temp_table=False, overwrite_output_folder=True):
 
         temp_job_name = job_name + '%030x' % random.randrange(16**30)
         super().query_to_local(query, temp_job_name, data_dir_path)
@@ -27,7 +27,7 @@ class BigQueryExporterEnhanced(BigQueryExporter):
             except BaseException:
                 pass
 
-        if overwrite:
+        if overwrite_output_folder:
             if os.path.exists(os.path.join(data_dir_path, job_name)):
                 shutil.rmtree(os.path.join(data_dir_path, job_name))
 
