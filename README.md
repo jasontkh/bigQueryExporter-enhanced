@@ -1,3 +1,8 @@
+# Credit
+This repository is forked from
+https://github.com/IcarusSO/bigQueryExporter
+
+
 # bigQueryExporter
 Export query data from google bigquery to local machine
 
