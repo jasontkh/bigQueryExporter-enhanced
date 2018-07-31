@@ -1,1 +1,1 @@
-from bigQueryExporter.BigQueryExporter import BigQueryExporter
+from bigQueryExporter.BigQueryExporterEnhanced import BigQueryExporterEnhanced as BigQueryExporter

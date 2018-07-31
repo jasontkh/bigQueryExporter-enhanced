@@ -1,6 +1,5 @@
 import os
 import time
-import uuid
 import logging
 import shutil
 import pandas as pd
@@ -8,7 +7,6 @@ from datetime import datetime
 from google.cloud import bigquery
 from google.cloud import storage
 from google.cloud.bigquery.table import Table
-from google.cloud.bigquery.dataset import Dataset
 
 
 class BigQueryExporter:
@@ -58,7 +56,7 @@ class BigQueryExporter:
             logging.info('[BigQueryExporter] ['+job_name+'] ::bigqueyr_client.delete_table(%s) ...' % destination_table )
             self.bigquery_client.delete_table(destination_table)
         except:
-            logging.info('[BigQueryExporter] ['+job_name+'] ::execption point 01 ...' % dataset_name )
+            logging.info('[BigQueryExporter] ['+job_name+'] ::execption point 01 ...(%s)' % dataset_name )
             pass
         logging.info('[BigQueryExporter] ['+job_name+'] ::bigqueyr_client.create_table( Table( %s ) ) ...' % destination_table )
         self.bigquery_client.create_table(Table(destination_table))
@@ -119,8 +117,7 @@ class BigQueryExporter:
         logging.info('[BigQueryExporter] ['+job_name+'] ::table_to_gs completed, elpased {}s'.format(timeElapsed.seconds))
         
         return bucket
-            
-            
+
     def gs_to_local(self, bucket, job_name, data_dir_path):
         #logging
         logging.info('[BigQueryExporter] ['+job_name+'] ::gs_to_local start')
@@ -140,10 +137,10 @@ class BigQueryExporter:
         # Export the files in google storage to local
         for blob in blobs:
             name = blob.name.split('/')[-1]
-            blob.download_to_filename(dir_path+ '/' + name)
-        
+            blob.download_to_filename(dir_path + '/' + name)
+
         # logging
-        timeElapsed=datetime.now()-startTime 
+        timeElapsed=datetime.now() - startTime
         logging.info('[BigQueryExporter] ['+job_name+'] ::gs_to_local completed, elpased {}s'.format(timeElapsed.seconds))
         
     def query_to_gs(self, query, job_name):

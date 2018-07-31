@@ -2,13 +2,16 @@
 This repository is forked from
 https://github.com/IcarusSO/bigQueryExporter
 
+# Change Log (Compare with original version)
+### query_to_local()
+- Create a temp table with a random hash on BQ as output table, so that simultaneous execution of the function will not overwrite each other.
+- Remove the temp table after the execution. (May also set keep_temp_table=True if you wish to keep them).
 
 # bigQueryExporter
 Export query data from google bigquery to local machine
 
 #### Installation
     pip install bigQueryExporter
-    pip3 install bigQueryExporter
     
     For Mac python 2.7
     pip install bigQueryExporter --ignore-installed six
@@ -16,7 +19,7 @@ Export query data from google bigquery to local machine
 #### Example
     from bigQueryExport import BigQueryExporter
     bigQueryExporter = BigQueryExporter(project_name, dataset_name, bucket_name)
-    bigQueryExporter = query_to_local(query, job_name, '../data')
+    export_path = query_to_local(query, job_name, '../data')
 
 #### Requirement
 - Your server/ local machine should have the right to access the project
