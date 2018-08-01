@@ -24,8 +24,7 @@ class BigQueryExporter:
         
         self.bigquery_client = bigquery.Client(project=project_name)
         self.storage_client = storage.Client(project=project_name)
-        
-        
+
     def query_to_table(self, query, job_name, dataset_name=None):
         # external logging if required
         if self.log_lambda is not None:
@@ -158,8 +157,7 @@ class BigQueryExporter:
         # logging
         timeElapsed=datetime.now()-startTime 
         logging.info('[BigQueryExporter] ['+job_name+'] ::query_to_gs completed, elpased {}s'.format(timeElapsed.seconds))
-        
-        
+
     def query_to_local(self, query, job_name, data_dir_path):
         # Do nothing if use_cache
         if BigQueryExporter._use_cache:
@@ -176,8 +174,7 @@ class BigQueryExporter:
         # logging
         timeElapsed=datetime.now()-startTime 
         logging.info('[BigQueryExporter] ['+job_name+'] ::query_to_local completed, elpased {}s'.format(timeElapsed.seconds))
-        
-        
+
     def query_to_memory(self, query):
         # external logging if required
         if self.log_lambda is not None:
@@ -198,6 +195,3 @@ class BigQueryExporter:
         values = [[v for (k, v) in __.items()] for __ in _]
         df = pd.DataFrame(values, columns=columns)
         return df
-    
-    
-        

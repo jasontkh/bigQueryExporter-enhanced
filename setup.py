@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='bigQueryExporterEnhanced',
-    version='1.0.3',
+    version='1.0.4',
     description='Package codes to execute queries on BigQuery and save to local machine',
     author='Icarus So (enhanced by Jason Tsang)',
     author_email='tsangkinhoi@gmail.com',
@@ -19,4 +19,9 @@ setuptools.setup(
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
+    install_requires=[
+        'google-cloud-bigquery==1.*',
+        'google-cloud-storage==1.*',
+        'pandas',
+    ],
 )
