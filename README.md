@@ -18,16 +18,16 @@ Export query data from google bigquery to local machine
     bigQueryExporter = BigQueryExporter(project_name, dataset_name, bucket_name)   
 
 #### Query To Table
-    bigQueryExporter.query_to_table(self, query, job_name, dataset_name=None)
+    bigQueryExporter.query_to_table(query, job_name, dataset_name)
     
 #### Table To GS
-    bigQueryExporter.table_to_gs(self, destination_table, job_name)
+    bigQueryExporter.table_to_gs(destination_table, job_name)
     
 #### GS To Local
-    bigQueryExporter.gs_to_local(self, bucket, job_name, data_dir_path)
+    bigQueryExporter.gs_to_local(bucket, job_name, data_dir_path)
     
 #### Query To GS (Query to Table + Table to GS)
-    bigQueryExporter.query_to_gs(self, query, job_name)
+    bigQueryExporter.query_to_gs(query, job_name)
 
 #### Query To Local (Query to Table + Table to GS + GS to Local)
     export_path = bigQueryExporter.query_to_local(query)
