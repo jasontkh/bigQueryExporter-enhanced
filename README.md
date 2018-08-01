@@ -12,24 +12,33 @@ Export query data from google bigquery to local machine
 
 #### Installation
     pip install bigQueryExporterEnhanced
-
-#### Example
-    # In order to install this package as a drop in replacement,
-    # class name is kept as BigQueryExporter.
-
+    
+#### Prepare for the connection
     from bigQueryExport import BigQueryExporter
-    bigQueryExporter = BigQueryExporter(project_name, dataset_name, bucket_name)
-    export_path = query_to_local(query)
+    bigQueryExporter = BigQueryExporter(project_name, dataset_name, bucket_name)   
+
+#### Query To Table
+    bigQueryExporter.query_to_table(self, query, job_name, dataset_name=None)
+    
+#### Table To GS
+    bigQueryExporter.table_to_gs(self, destination_table, job_name)
+    
+#### GS To Local
+    bigQueryExporter.gs_to_local(self, bucket, job_name, data_dir_path)
+    
+#### Query To GS (Query to Table + Table to GS)
+    bigQueryExporter.query_to_gs(self, query, job_name)
+
+#### Query To Local (Query to Table + Table to GS + GS to Local)
+    export_path = bigQueryExporter.query_to_local(query)
     
     # or with the options
-    export_path = query_to_local(query, 
-                                 job_name='simple_query', 
-                                 data_dir_path='out/',
-                                 keep_temp_table=False,
-                                 overwrite_output_folder=True)
+    export_path = bigQueryExporter.query_to_local(query, 
+                                                  job_name='simple_query', 
+                                                  data_dir_path='out/',
+                                                  keep_temp_table=False,
+                                                  overwrite_output_folder=True)
     
-    
-
 #### Requirement
 - Your server/ local machine should have the right to access the project
 - Right should be granted following the insturction on [Google SDK](https://cloud.google.com/sdk/docs/)
