@@ -16,7 +16,7 @@ class BigQueryExporter:
     def use_cache(is_use_cache=True):
         BigQueryExporter._use_cache = is_use_cache
     
-    def __init__(self, project_name, dataset_name, bucket_name, log_lambda=None):
+    def __init__(self, project_name, dataset_name, bucket_name=None, log_lambda=None):
         self.project_name = project_name
         self.dataset_name = dataset_name
         self.bucket_name = bucket_name
@@ -82,9 +82,8 @@ class BigQueryExporter:
         logging.info('[BigQueryExporter] ['+job_name+'] ::query_to_table completed, elpased {}s'.format(timeElapsed.seconds))
         
         return destination_table
-        
-        
-    def table_to_gs(self, destination_table, job_name):
+
+    def table_to_gs(self, destination_table, job_name, bucket_name=None):
         #logging
         logging.info('[BigQueryExporter] ['+job_name+'] ::table_to_gs start')
         startTime= datetime.now()
@@ -92,10 +91,18 @@ class BigQueryExporter:
         # initialize variables
         bigquery_client = self.bigquery_client
         storage_client = self.storage_client
-        bucket_name = self.bucket_name
-        
+
+        if bucket_name is None:
+            bucket_name = self.bucket_name
+
+        # Create Bucket if needed
+        try:
+            bucket = storage_client.get_bucket(bucket_name)
+        except:
+            logging.info('[BigQueryExporter] [' + job_name + '] ::Bucket not found, create a new one.')
+            bucket = storage_client.create_bucket(bucket_name, project=self.project_name)
+
         # Create empty folder
-        bucket = storage_client.get_bucket(bucket_name)
         blobs = list(bucket.list_blobs(prefix=job_name))
         for blob in blobs:
             blob.delete()
