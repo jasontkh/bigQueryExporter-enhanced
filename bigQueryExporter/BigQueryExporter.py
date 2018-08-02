@@ -95,6 +95,9 @@ class BigQueryExporter:
         if bucket_name is None:
             bucket_name = self.bucket_name
 
+        if bucket_name is None:
+            raise Exception('No bucket name defined, either pass it with function call or when initializing BigQueryExporter.')
+
         # Create Bucket if needed
         try:
             bucket = storage_client.get_bucket(bucket_name)
@@ -119,7 +122,7 @@ class BigQueryExporter:
             time.sleep(1)
             
         # logging
-        timeElapsed=datetime.now()-startTime 
+        timeElapsed = datetime.now()-startTime
         logging.info('[BigQueryExporter] ['+job_name+'] ::table_to_gs completed, elpased {}s'.format(timeElapsed.seconds))
         
         return bucket
@@ -127,7 +130,7 @@ class BigQueryExporter:
     def gs_to_local(self, bucket, job_name, data_dir_path):
         #logging
         logging.info('[BigQueryExporter] ['+job_name+'] ::gs_to_local start')
-        startTime= datetime.now()
+        startTime = datetime.now()
         
         # initialize variables
         dir_path = data_dir_path + '/' + job_name
@@ -149,17 +152,17 @@ class BigQueryExporter:
         timeElapsed=datetime.now() - startTime
         logging.info('[BigQueryExporter] ['+job_name+'] ::gs_to_local completed, elpased {}s'.format(timeElapsed.seconds))
         
-    def query_to_gs(self, query, job_name):
+    def query_to_gs(self, query, job_name, bucket_name=None):
         # Do nothing if use_cache
         if BigQueryExporter._use_cache:
             return
         
         #logging
         logging.info('[BigQueryExporter] ['+job_name+'] ::query_to_gs start')
-        startTime= datetime.now()
+        startTime = datetime.now()
         
         destination_table = self.query_to_table(query, job_name)
-        bucket = self.table_to_gs(destination_table, job_name)
+        self.table_to_gs(destination_table, job_name=job_name, bucket_name=bucket_name)
         
         # logging
         timeElapsed=datetime.now()-startTime 
@@ -172,14 +175,14 @@ class BigQueryExporter:
         
         #logging
         logging.info('[BigQueryExporter] ['+job_name+'] ::query_to_local start')
-        startTime= datetime.now()
+        startTime = datetime.now()
         
         destination_table = self.query_to_table(query, job_name)
         bucket = self.table_to_gs(destination_table, job_name)
         self.gs_to_local(bucket, job_name, data_dir_path)
         
         # logging
-        timeElapsed=datetime.now()-startTime 
+        timeElapsed = datetime.now()-startTime
         logging.info('[BigQueryExporter] ['+job_name+'] ::query_to_local completed, elpased {}s'.format(timeElapsed.seconds))
 
     def query_to_memory(self, query):
