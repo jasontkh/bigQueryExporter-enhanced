@@ -7,8 +7,8 @@ import shutil
 
 class BigQueryExporterEnhanced(BigQueryExporter):
 
-    def __init__(self, project_name, dataset_name, bucket_name=None, log_lambda=None):
-        super().__init__(project_name, dataset_name, bucket_name, log_lambda=log_lambda)
+    def __init__(self, project_name, dataset_name, bucket_name=None, log_lambda=None, key_file_path=None):
+        super().__init__(project_name, dataset_name, bucket_name, log_lambda=log_lambda, key_file_path=key_file_path)
 
     # Enhancement of the query_to_local function
     def query_to_local(self, query, job_name="", data_dir_path="export", keep_temp_table=False, overwrite_output_folder=True):
