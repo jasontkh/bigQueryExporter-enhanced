@@ -7,6 +7,7 @@ from datetime import datetime
 from google.cloud import bigquery
 from google.cloud import storage
 from google.cloud.bigquery.table import Table
+from google.oauth2 import service_account
 
 
 class BigQueryExporter:
@@ -16,14 +17,19 @@ class BigQueryExporter:
     def use_cache(is_use_cache=True):
         BigQueryExporter._use_cache = is_use_cache
     
-    def __init__(self, project_name, dataset_name, bucket_name=None, log_lambda=None):
+    def __init__(self, project_name, dataset_name, bucket_name=None, log_lambda=None, key_file_path=None):
         self.project_name = project_name
         self.dataset_name = dataset_name
         self.bucket_name = bucket_name
         self.log_lambda = log_lambda
-        
-        self.bigquery_client = bigquery.Client(project=project_name)
-        self.storage_client = storage.Client(project=project_name)
+
+        if key_file_path is not None:
+            credential = service_account.Credentials.from_service_account_file(key_file_path)
+        else:
+            credential = None
+
+        self.bigquery_client = bigquery.Client(project=project_name, credentials=credential)
+        self.storage_client = storage.Client(project=project_name, credentials=credential)
 
     def query_to_table(self, query, job_name, dataset_name=None):
         # external logging if required

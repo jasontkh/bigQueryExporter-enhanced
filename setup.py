@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='bigQueryExporterEnhanced',
-    version='1.0.5',
+    version='1.0.6',
     description='Package codes to execute queries on BQ and save to local machine, to BQ table or to GCS.',
     author='Icarus So (enhanced by Jason Tsang)',
     author_email='tsangkinhoi@gmail.com',
