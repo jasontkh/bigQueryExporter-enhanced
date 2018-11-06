@@ -5,13 +5,13 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='bigQueryExporterEnhanced',
-    version='1.0.6',
+    version='1.0.7',
     description='Package codes to execute queries on BQ and save to local machine, to BQ table or to GCS.',
     author='Icarus So (enhanced by Jason Tsang)',
     author_email='tsangkinhoi@gmail.com',
     url='https://github.com/tsangkinhoi/bigQueryExporter-enhanced',  # use the URL to the github repo
     keywords=['bigquery', 'local', 'export'],  # arbitrary keywords
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=["___test.py"]),
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

@@ -11,7 +11,10 @@ class BigQueryExporterEnhanced(BigQueryExporter):
         super().__init__(project_name, dataset_name, bucket_name, log_lambda=log_lambda, key_file_path=key_file_path)
 
     # Enhancement of the query_to_local function
-    def query_to_local(self, query, job_name="", data_dir_path="export", keep_temp_table=False, overwrite_output_folder=True):
+    def query_to_local(self, query, job_name="tmp_job", data_dir_path="export", keep_temp_table=False, overwrite_output_folder=True):
+
+        if not os.path.exists(data_dir_path):
+            os.makedirs(data_dir_path)
 
         temp_job_name = job_name + '%030x' % random.randrange(16**30)
 
@@ -38,14 +41,14 @@ class BigQueryExporterEnhanced(BigQueryExporter):
             except BaseException:
                 pass
 
-            # Remove the exported files in the bucket
-            blobs = list(bucket.list_blobs(prefix=job_name))
-            for blob in blobs:
-                blob.delete()
+            # # Remove the exported files in the bucket
+            # blobs = list(bucket.list_blobs(prefix=job_name))
+            # for blob in blobs:
+            #     blob.delete()
 
             # Remove the bucket
             if need_to_remove_bucket:
-                bucket.delete()
+                result = bucket.delete(force=True)
 
         if overwrite_output_folder:
             if os.path.exists(os.path.join(data_dir_path, job_name)):
